@@ -81,10 +81,10 @@ Step-by-Step:
 */
 function applyDiscount(discPercent) {
   return function (objectName) {
-    return objectName.price * (discPercent / 100);
+    return objectName.price - objectName.price * (discPercent / 100);
   };
 }
-const discount50 = applyDiscount(50);
+const discount50 = applyDiscount(20);
 
 let discountPriceArray = products.map((objectName) => {
   return {
