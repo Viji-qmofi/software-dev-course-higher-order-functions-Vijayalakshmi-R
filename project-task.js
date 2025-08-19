@@ -43,6 +43,14 @@ Step-by-Step:
 2. Use the `filter()` method to apply the callback to the array.
 3. Return the filtered result.
 */
+function filterProducts(inputArr, callbackFunction) {
+  return inputArr.filter(callbackFunction);
+}
+console.log(
+  "Products in stock\n",
+  filterProducts(products, (objectName) => objectName.inStock === true)
+);
+
 
 
 /*
@@ -55,6 +63,8 @@ Step-by-Step:
 2. Extract and transform the `name` property to uppercase.
 3. Store the result in a new variable.
 */
+const nameArray = products.map((objectName) => objectName.name.toUpperCase());
+console.log("\nUppercase names:", nameArray);
 
 
 /*
@@ -69,7 +79,21 @@ Step-by-Step:
 2. Return a new function that takes a product object.
 3. Use this returned function inside a `map()` call to apply discounts to all products.
 */
+function applyDiscount(discPercent) {
+  return function (objectName) {
+    return objectName.price * (discPercent / 100);
+  };
+}
+const discount50 = applyDiscount(50);
 
+let discountPriceArray = products.map((objectName) => {
+  return {
+    ...objectName,
+    price: discount50(objectName),
+  };
+});
+//console.log(products); // test to make sure we didn't change the original.
+console.log("\nDiscouted Products\n", discountPriceArray);
 
 /*
 🔹 Task 4: Calculate Total Inventory Value
@@ -81,13 +105,38 @@ Step-by-Step:
 2. Add only the prices of products where `inStock` is true.
 3. Store the total in a new variable.
 */
+const totalInStockPrice = products.reduce((total, product) => {
+  
+  if(product.inStock === true)
+    return total + product.price;
+  else 
+    return total;}, 0);
+
+  console.log("\nTotal value in stock:\t", totalInStockPrice);
 
 
 // ============================================
 // 🧪 Console Test Your Work
 // ============================================
 
-// console.log("Filtered products:", ...);
-// console.log("Uppercased names:", ...);
-// console.log("Discounted products:", ...);
-// console.log("Total value in stock:", ...);
+/*
+Products in stock
+ [
+  { name: 'Laptop', price: 1000, inStock: true },
+  { name: 'Tablet', price: 800, inStock: true },
+  { name: 'Monitor', price: 300, inStock: true }
+]
+
+Uppercase names: [ 'LAPTOP', 'PHONE', 'TABLET', 'MONITOR', 'KEYBOARD' ]
+
+Discouted Products
+ [
+  { name: 'Laptop', price: 500, inStock: true },
+  { name: 'Phone', price: 250, inStock: false },
+  { name: 'Tablet', price: 400, inStock: true },
+  { name: 'Monitor', price: 150, inStock: true },
+  { name: 'Keyboard', price: 50, inStock: false }
+]
+
+Total value in stock:	 2100
+*/
